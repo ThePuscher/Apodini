@@ -6,7 +6,6 @@ import Foundation
 import Apodini
 import ApodiniVaporSupport
 import Vapor
-@_implementationOnly import ApodiniAuthentication
 
 
 struct RESTEndpointHandler<H: Handler> {
