@@ -11,6 +11,49 @@ import XCTApodini
 
 
 final class InformationTests: XCTestCase {
+    func testMockInformation() throws {
+        let informationArray: [AnyInformation] = [
+            MockInformation("InformationTest"),
+            MockInformationWithDynamicKey(key: "key", value: "value"),
+            MockIntInformation(4)
+        ]
+
+        let information2Array: [AnyInformation] = [
+            MockInformationWithDynamicKey(key: MockIntInformation.key.id, value: "6")
+        ]
+
+        let information = InformationSet(informationArray)
+        let information2 = InformationSet(information2Array)
+
+        XCTAssertEqual(information[MockInformation.self], "InformationTest")
+        XCTAssertRuntimeFailure(information[MockInformationWithDynamicKey.self])
+
+        let anyValue = information[MockInformation.key] // returns Any?
+        let stringValue: String? = information[MockInformation.key]
+        let dynamicValue = information[DynamicStringKey(id: "key")]
+        let intStringValue = information[MockIntInformation.key] // should be the raw value
+        let intValue = information[MockIntInformation.self]
+        let int2StringValue = information2[MockIntInformation.key]
+        let int2Value = information2[MockIntInformation.self]
+
+        XCTAssertEqual(try XCTUnwrap(anyValue as? String), "InformationTest")
+        XCTAssertEqual(try XCTUnwrap(anyValue as? String), stringValue)
+        XCTAssertEqual(dynamicValue, "value")
+        XCTAssertEqual(intStringValue, "4")
+        XCTAssertEqual(intValue, 4)
+        XCTAssertEqual(int2StringValue, "6")
+        XCTAssertEqual(int2Value, 6)
+
+        let nonExistentValue = information[ObjectIdentifier(Int.self)]
+        let nonExistentDynamicValue = information[DynamicStringKey(id: "asdf")]
+
+        XCTAssert(nonExistentValue == nil)
+        XCTAssert(nonExistentDynamicValue == nil)
+
+        var illegalCast: Int?
+        XCTAssertRuntimeFailure(illegalCast = information[MockInformation.key])
+    }
+
     func testInformationParsingAuthentication() throws {
         let basicAuthorization = try XCTUnwrap(
             AnyHTTPInformation(key: "Authorization", rawValue: "Basic UGF1bFNjaG1pZWRtYXllcjpTdXBlclNlY3JldFBhc3N3b3Jk")

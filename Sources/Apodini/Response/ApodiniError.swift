@@ -54,29 +54,6 @@ public struct ApodiniError: Error {
         self.information = InformationSet(information)
     }
 
-    /// This method mutates the current `ApodiniError` by applying the given mutations
-    /// and returning the changes in form of a new `ApodiniError`.
-    /// - Parameters:
-    ///   - reason: If provided, it overrides the original **public** reason.
-    ///   - description: If provided, it overrides the original **internal** description of this error.
-    ///   - information: If provided, it creates a union of the provided `Information` entries and the existing ones.
-    ///   - options: If provided, it appends exporter-specific options to the existing ones.
-    /// - Returns: The mutated `ApodiniError`
-    public func mutate(
-        reason: String? = nil,
-        description: String? = nil,
-        information: AnyInformation...,
-        options: Option...
-    ) -> ApodiniError {
-        ApodiniError(
-            type: type,
-            reason: reason ?? self.reason,
-            description: description ?? self.description,
-            information: self.information.union(InformationSet(information)),
-            PropertyOptionSet(lhs: self.options, rhs: options)
-        )
-    }
-
     /// Create a new `ApodiniError` from its base components:
     /// - Parameter `type`: The associated `ErrorType`. If `other` is chosen, the `options` should be
     ///   used to provide additional guidance for the exporters.
@@ -101,8 +78,21 @@ public struct ApodiniError: Error {
     /// Create a new `ApodiniError` from this instance using a different `reason` and/or `description`
     /// - Parameter `reason`: The **public** reason explaining what led to the this error.
     /// - Parameter `description`: The **internal** description of this error. This will only be exposed in `DEBUG` mode.
-    public func callAsFunction(reason: String? = nil, description: String? = nil) -> ApodiniError {
-        ApodiniError(type: self.type, reason: reason ?? self.reason, description: description ?? self.description, self.options)
+    ///   - information: If provided, it creates a union of the provided `Information` entries and the existing ones.
+    ///   - options: If provided, it appends exporter-specific options to the existing ones.
+    public func callAsFunction(
+        reason: String? = nil,
+        description: String? = nil,
+        information: AnyInformation...,
+        options: Option...
+    ) -> ApodiniError {
+        ApodiniError(
+            type: type,
+            reason: reason ?? self.reason,
+            description: description ?? self.description,
+            information: self.information.union(InformationSet(information)),
+            PropertyOptionSet(lhs: self.options, rhs: options)
+        )
     }
 }
 

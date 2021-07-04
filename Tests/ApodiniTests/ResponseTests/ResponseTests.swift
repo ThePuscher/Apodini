@@ -98,15 +98,28 @@ final class ResponseTests: ApodiniTests {
     }
     
     func testResponseMapFunctionality() {
-        let responses: [Response<String>] = [.nothing, .send("42"), .final("42"), .end]
+        let responses: [Response<String>] = [
+            .nothing,
+            .send("42", information: MockInformation("information1")),
+            .final("42", information: MockInformation("information2")),
+            .end,
+            .send(.ok, information: MockInformation("informationOk")),
+            .final(.noContent, information: MockInformation("informationNoContent"))
+        ]
         
         let intResponses = responses.map { response in
             response.map { Int($0) }
         }
         XCTAssertEqual(intResponses[0].content, nil)
         XCTAssertEqual(intResponses[1].content, 42)
+        XCTAssertEqual(intResponses[1].information[MockInformation.self], "information1")
         XCTAssertEqual(intResponses[2].content, 42)
+        XCTAssertEqual(intResponses[2].information[MockInformation.self], "information2")
         XCTAssertEqual(intResponses[3].content, nil)
+        XCTAssertEqual(intResponses[4].status, .ok)
+        XCTAssertEqual(intResponses[4].information[MockInformation.self], "informationOk")
+        XCTAssertEqual(intResponses[5].status, .noContent)
+        XCTAssertEqual(intResponses[5].information[MockInformation.self], "informationNoContent")
     }
     
     func testResponseGeneration() throws {

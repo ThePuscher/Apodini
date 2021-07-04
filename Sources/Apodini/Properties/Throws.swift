@@ -18,7 +18,7 @@ public struct Throws {
     
     private let description: String?
 
-    private let information: [AnyInformation]
+    private let information: InformationSet
     
     internal init(
         type: ErrorType,
@@ -31,7 +31,7 @@ public struct Throws {
         self.type = `type`
         self.reason = reason
         self.description = description
-        self.information = information
+        self.information = InformationSet(information)
     }
 
     /// Create a new `ApodiniError` from its base components:
@@ -69,7 +69,7 @@ public struct Throws {
     /// An `ApodiniError` which is based on the information passed into this property wrapper. The
     /// `ApodiniError` can be called as a function to modify the errors `reason` and `description`.
     public var wrappedValue: ApodiniError {
-        ApodiniError(type: self.type, reason: self.reason, description: self.description, self.options)
+        ApodiniError(type: self.type, reason: self.reason, description: self.description, information: information, self.options)
     }
 }
 

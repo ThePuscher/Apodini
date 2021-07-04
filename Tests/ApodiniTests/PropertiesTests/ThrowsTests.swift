@@ -16,7 +16,7 @@ class ThrowsTests: ApodiniTests {
         @Throws(.badInput, reason: "!badInput!", description: "<badInput>")
         var error1: ApodiniError
         
-        @Throws(.badInput, reason: "!badInput!")
+        @Throws(.badInput, reason: "!badInput!", information: MockInformation("testInformation"))
         var error2: ApodiniError
         
         @Throws(.badInput, description: "<badInput>")
@@ -43,7 +43,7 @@ class ThrowsTests: ApodiniTests {
                 }
             case 2:
                 if applyChanges {
-                    throw error2(reason: reason, description: description)
+                    throw error2(reason: reason, description: description, options: .webSocketErrorCode(.goingAway))
                 } else {
                     throw error2
                 }
@@ -141,6 +141,13 @@ class ThrowsTests: ApodiniTests {
                         reason: nil,
                         description: "<other>").evaluationError().message(for: MockExporter<String>.self).contains("<other>"))
         #endif
+    }
+
+    func testInformation() throws {
+        XCTAssertEqual(
+            ErrorTestHandler(errorCode: 2).evaluationError().information[MockInformation.self],
+            "testInformation"
+        )
     }
 }
 
