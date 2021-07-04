@@ -8,6 +8,7 @@
 
 import XCTest
 import XCTApodini
+@testable import Apodini
 import Vapor
 
 class ThrowsTests: ApodiniTests {

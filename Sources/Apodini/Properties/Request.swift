@@ -23,7 +23,7 @@ protocol Request: CustomStringConvertible, CustomDebugStringConvertible {
 
     var remoteAddress: SocketAddress? { get }
     
-    var information: Set<AnyInformation> { get }
+    var information: InformationSet { get }
 
     func retrieveParameter<Element: Codable>(_ parameter: Parameter<Element>) throws -> Element
 }

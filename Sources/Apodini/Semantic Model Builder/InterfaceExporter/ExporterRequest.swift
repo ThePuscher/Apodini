@@ -10,7 +10,7 @@ public protocol ExporterRequest: Reducible {
     var remoteAddress: SocketAddress? { get }
     
     /// Additional information that is carried with the request
-    var information: Set<AnyInformation> { get }
+    var information: [AnyInformation] { get }
 }
 
 extension ExporterRequest {
@@ -20,7 +20,7 @@ extension ExporterRequest {
     }
     
     /// Additional information that is carried with the request
-    public var information: Set<AnyInformation> {
+    public var information: [AnyInformation] {
         []
     }
 }
