@@ -371,8 +371,6 @@ class RESTInterfaceExporterTests: ApodiniTests {
 
         let information = InformationSet(request.information)
 
-        print(information) // TODO remove
-
         let authorization = try XCTUnwrap(information[Authorization.self])
         XCTAssertEqual(authorization.type, "Basic")
         XCTAssertEqual(authorization.credentials, "UGF1bFNjaG1pZWRtYXllcjpTdXBlclNlY3JldFBhc3N3b3Jk")
@@ -381,7 +379,6 @@ class RESTInterfaceExporterTests: ApodiniTests {
         XCTAssertNil(authorization.bearerToken)
 
         let restoredHeaders = HTTPHeaders(information)
-        print(restoredHeaders) // TODO remove
         XCTAssertEqual(restoredHeaders.first(name: .authorization), value)
     }
 }
