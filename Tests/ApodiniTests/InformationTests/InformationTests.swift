@@ -52,6 +52,10 @@ final class InformationTests: XCTestCase {
 
         var illegalCast: Int?
         XCTAssertRuntimeFailure(illegalCast = information[MockInformation.key])
+
+        XCTAssertRuntimeFailure(MockInformationWithDynamicKey.key)
+
+        XCTAssertEqual("".information.count, 0)
     }
 
     func testInformationParsingAuthentication() throws {

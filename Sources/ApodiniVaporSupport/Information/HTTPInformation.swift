@@ -4,22 +4,6 @@
 
 import Apodini
 
-/// Denotes some unspecified `HTTPInformation` implementation.
-public protocol SomeHTTPInformation: AnyInformation {
-    /// The HTTP header type. Must to adhere to the according standard.
-    static var header: String { get }
-
-    /// The raw HTTP header value, interpreted as a string.
-    var rawValue: String { get }
-}
-
-extension SomeHTTPInformation {
-    /// Makes the static `SomeHTTPInformation.header` property accessible via an instance property.
-    var header: String {
-        Self.header
-    }
-}
-
 /// A `HTTPInformation` is a `DynamicInformationInstantiatable` for the `AnyHTTPInformation` `Information`.
 /// It is used to provide implementations for individual HTTP Header types.
 /// Currently the following Headers are supported as Information out of the box:
@@ -28,8 +12,11 @@ extension SomeHTTPInformation {
 /// - `ETag`
 /// - `Expires`
 /// - `RedirectTo`
-public protocol HTTPInformation: DynamicInformationInstantiatable, SomeHTTPInformation {
+public protocol HTTPInformation: DynamicInformationInstantiatable {
     typealias DynamicInformation = AnyHTTPInformation
+
+    /// The HTTP header type. Must to adhere to the according standard.
+    static var header: String { get }
 }
 
 public extension HTTPInformation {

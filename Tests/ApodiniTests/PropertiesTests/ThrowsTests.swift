@@ -43,7 +43,7 @@ class ThrowsTests: ApodiniTests {
                 }
             case 2:
                 if applyChanges {
-                    throw error2(reason: reason, description: description, options: .webSocketErrorCode(.goingAway))
+                    throw error2(reason: reason, description: description)
                 } else {
                     throw error2
                 }
@@ -55,7 +55,7 @@ class ThrowsTests: ApodiniTests {
                 }
             case 4:
                 if applyChanges {
-                    throw error4(reason: reason, description: description)
+                    throw error4(reason: reason, description: description, options: .webSocketErrorCode(.goingAway))
                 } else {
                     throw error4
                 }

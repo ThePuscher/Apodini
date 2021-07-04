@@ -10,6 +10,10 @@ public struct HTTPInformationKey: DynamicInformationKey {
 
     public var header: String
 
+    public init(header: String) {
+        self.header = header.lowercased()
+    }
+
     public func hash(into hasher: inout Hasher) {
         hasher.combine(ObjectIdentifier(Self.self))
         hasher.combine(header)

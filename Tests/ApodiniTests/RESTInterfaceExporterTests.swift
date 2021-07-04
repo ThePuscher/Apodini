@@ -358,4 +358,30 @@ class RESTInterfaceExporterTests: ApodiniTests {
             XCTAssertEqual(container.links, ["test1": prefix + "/test1", "test2": prefix + "/test2", "test3": prefix + "/test3"])
         }
     }
+
+    func testInformation() throws {
+        let value = "Basic UGF1bFNjaG1pZWRtYXllcjpTdXBlclNlY3JldFBhc3N3b3Jk"
+
+        var headers = HTTPHeaders()
+        headers.add(name: .authorization, value: value)
+
+        print(headers)
+
+        let request = Vapor.Request(application: app.vapor.app, headers: headers, on: app.eventLoopGroup.next())
+
+        let information = InformationSet(request.information)
+
+        print(information) // TODO remove
+
+        let authorization = try XCTUnwrap(information[Authorization.self])
+        XCTAssertEqual(authorization.type, "Basic")
+        XCTAssertEqual(authorization.credentials, "UGF1bFNjaG1pZWRtYXllcjpTdXBlclNlY3JldFBhc3N3b3Jk")
+        XCTAssertEqual(authorization.basic?.username, "PaulSchmiedmayer")
+        XCTAssertEqual(authorization.basic?.password, "SuperSecretPassword")
+        XCTAssertNil(authorization.bearerToken)
+
+        let restoredHeaders = HTTPHeaders(information)
+        print(restoredHeaders) // TODO remove
+        XCTAssertEqual(restoredHeaders.first(name: .authorization), value)
+    }
 }

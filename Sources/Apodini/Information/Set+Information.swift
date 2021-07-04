@@ -101,24 +101,3 @@ public extension InformationSet {
         self = .init(sequence.map { $0.entry() })
     }
 }
-
-// MARK: InformationSet Operations
-public extension InformationSet {
-    /// Inserts a new `Information` into the `InformationSet`.
-    @discardableResult
-    mutating func insert<I: Information>(_ newMember: I) -> (inserted: Bool, memberAfterInsert: Element) {
-        insert(AnyInformationEntry(newMember))
-    }
-
-    /// Updates a `Information` member in the `InformationSet`.
-    @discardableResult
-    mutating func update<I: Information>(with newMember: I) -> I? {
-        update(with: AnyInformationEntry(newMember))?.typed()
-    }
-
-    /// Removes a `Information` instance from the `InformationSet`.
-    @discardableResult
-    mutating func remove<I: Information>(_ member: I) -> I? {
-        remove(AnyInformationEntry(member))?.typed()
-    }
-}

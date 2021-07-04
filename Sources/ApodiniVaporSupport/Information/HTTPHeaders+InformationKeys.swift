@@ -15,9 +15,9 @@ extension Vapor.HTTPHeaders {
     public init(_ information: InformationSet) {
         self.init()
         for (key, value) in information
-            .compactMap({ $0.any() as? SomeHTTPInformation })
-            .map({ ($0.header, $0.rawValue) }) {
-            self.add(name: key, value: value)
+            .compactMap({ $0.any() as? AnyHTTPInformation })
+            .map({ ($0.key, $0.value) }) {
+            self.add(name: key.header, value: value)
         }
     }
 }
