@@ -40,7 +40,15 @@ public struct AnyHTTPInformation: InformationWithDynamicKey {
     ///   - key: The HTTP Header name.
     ///   - value: The raw string based HTTP Header value.
     public init(key: String, rawValue: String) {
-        self.key = HTTPInformationKey(header: key)
+        self.init(key: HTTPInformationKey(header: key), rawValue: rawValue)
+    }
+
+    /// Instantiates a new `AnyHTTPInformation` instance for the given HTTP key and value.
+    /// - Parameters:
+    ///   - key: The `HTTPInformationKey`.
+    ///   - value: The raw string based HTTP Header value.
+    public init(key: HTTPInformationKey, rawValue: String) {
+        self.key = key
         self.value = rawValue
     }
 }

@@ -22,3 +22,11 @@ public protocol DynamicInformationInstantiatable: Information {
     /// - Parameter rawValue: The raw value as captured by the `InformationWithDynamicKey`
     init?(rawValue: DynamicInformation.Value)
 }
+
+extension DynamicInformationInstantiatable {
+    /// Transforms the `DynamicInformationInstantiatable` back to its corresponding `DynamicInformation`.
+    /// This is used to ensure, that the `DynamicInformation` always gets stored in the `InformationSet`.
+    func untyped() -> DynamicInformation {
+        DynamicInformation(key: Self.key, rawValue: rawValue)
+    }
+}

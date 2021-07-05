@@ -16,6 +16,14 @@ public protocol InformationWithDynamicKey: Information where Value == DynamicKey
     /// Note the statically defined `InformationKey.key` property is ignored.
     var key: Self.DynamicKey { get }
 
+    /// Initializes the `InformationWithDynamicKey` from its `DynamicKey` and the corresponding `Value`.
+    /// This is specifically important to be able to convert a `DynamicInformationInstantiatable` back
+    /// to its original `InformationWithDynamicKey` (see `InformationWithDynamicKey`.typed(...)`.
+    /// - Parameters:
+    ///   - key: The respective `DynamicInformationKey`
+    ///   - rawValue: The respective `Value`.
+    init(key: DynamicKey, rawValue: DynamicKey.Value)
+
     /// This method can be used to instantiate a `DynamicInformationInstantiatable` from
     /// the contents of this `InformationWithDynamicKey`.
     /// - Parameter instantiatable: The instantiatable type to be used.

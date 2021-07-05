@@ -26,8 +26,12 @@ public struct MockInformationWithDynamicKey: InformationWithDynamicKey {
     public let value: String
 
     public init(key: String, value: String) {
-        self.key = DynamicStringKey(id: key)
-        self.value = value
+        self.init(key: DynamicStringKey(id: key), rawValue: value)
+    }
+
+    public init(key: DynamicStringKey, rawValue: String) {
+        self.key = key
+        self.value = rawValue
     }
 }
 

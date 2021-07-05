@@ -365,11 +365,10 @@ class RESTInterfaceExporterTests: ApodiniTests {
         var headers = HTTPHeaders()
         headers.add(name: .authorization, value: value)
 
-        print(headers)
-
         let request = Vapor.Request(application: app.vapor.app, headers: headers, on: app.eventLoopGroup.next())
 
-        let information = InformationSet(request.information)
+        var information = InformationSet(request.information)
+        information.insert(AnyInformationEntry(ETag("someTag", isWeak: true)))
 
         let authorization = try XCTUnwrap(information[Authorization.self])
         XCTAssertEqual(authorization.type, "Basic")
@@ -380,5 +379,6 @@ class RESTInterfaceExporterTests: ApodiniTests {
 
         let restoredHeaders = HTTPHeaders(information)
         XCTAssertEqual(restoredHeaders.first(name: .authorization), value)
+        XCTAssertEqual(restoredHeaders.first(name: .eTag), "W/\"someTag\"")
     }
 }

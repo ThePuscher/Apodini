@@ -14,11 +14,11 @@ public struct AnyInformationEntry {
     private var keyHashInto: (inout Hasher) -> Void
 
     init<I: Information>(_ information: I) {
-        self.information = information
-
-        if let value = StandardInformationInstantiatableVisitor()(information) {
-            self.value = value
+        if let (untypedInformation, rawValue) = StandardInformationInstantiatableVisitor()(information) {
+            self.information = untypedInformation
+            self.value = rawValue
         } else {
+            self.information = information
             self.value = information.value
         }
 
@@ -102,8 +102,8 @@ private extension InformationInstantiatableVisitor {
 }
 
 private struct StandardInformationInstantiatableVisitor: InformationInstantiatableVisitor {
-    func callAsFunction<T: DynamicInformationInstantiatable>(_ value: T) -> Any {
-        value.rawValue
+    func callAsFunction<T: DynamicInformationInstantiatable>(_ value: T) -> (AnyInformation, Any) {
+        (value.untyped(), value.rawValue)
     }
 }
 
@@ -132,6 +132,10 @@ private struct StandardInformationWithDynamicKeyVisitor: InformationWithDynamicK
 
 
 private struct TestInformationWithDynamicKey: InformationWithDynamicKey {
+    init() {}
+    init(key: Never, rawValue: Never) {
+        fatalError("Inaccessible")
+    }
     fileprivate var key: Never {
         fatalError("Inaccessible")
     }
